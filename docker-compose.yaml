@@ -1,0 +1,10 @@
+services:
+  build-db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./data:/app/data     # récupère dict.db et les CSV
+    command: >
+      bash -c "python load_dict.py && 
+               echo '[OK] dict.db ready in /data'"
