@@ -4,7 +4,17 @@ services:
       context: .
       dockerfile: Dockerfile
     volumes:
-      - ./data:/app/data     # récupère dict.db et les CSV
+      - ./data:/app/data
     command: >
       bash -c "python load_dict.py && 
                echo '[OK] dict.db ready in /data'"
+  api:
+    build:
+      context: ./api
+    volumes:
+      - ./data:/app/data:ro
+    ports:
+      - "8080:8080"
+    depends_on:
+      build-db:
+        condition: service_completed_successfully
